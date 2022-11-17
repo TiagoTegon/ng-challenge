@@ -5,6 +5,7 @@ import * as logger from "morgan"
 
 import { connectDB } from "./config/db"
 import { accountRouter } from "./routes/accountRoutes"
+import { userRouter } from "./routes/userRoutes"
 
 export const app = express()
 
@@ -15,4 +16,5 @@ app.use(logger('dev'))
 connectDB()
 
 app.use('/account', accountRouter)
+app.use('/user', userRouter)
 app.use('/', (req, res) => res.send('NG-CHALLENGE API'))
