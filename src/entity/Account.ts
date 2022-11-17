@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm"
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm"
+import { Transaction } from "./Transaction"
 
 @Entity()
 export class Account {
@@ -8,4 +9,7 @@ export class Account {
 
     @Column("float", { default: 100.00 })
     balance: number
+
+    // @OneToMany(() => Transaction, (transaction) => transaction.creditedAccountId)
+    // transactions: Transaction[]
 }
