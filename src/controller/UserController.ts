@@ -2,6 +2,14 @@ import { AppDataSource } from "../data-source"
 import { Account } from "../entity/Account"
 import { User } from "../entity/User"
 
+import * as crypto from "crypto"
+
+function hashPassword(password: string) {
+  let hash = crypto.createHmac('sha256', 'ng-challenge')
+  let update = hash.update(password)
+  let digest = update.digest('hex')
+  return digest
+}
 export class UserController {
 
   async createUser(req, res) {
@@ -11,13 +19,14 @@ export class UserController {
     if (password.length < 8 || !password.match(/(?=.*[A-Z])(?=.*[0-9])/gm))
       return res.status(500).json({ error: 'Password needs at sleast 8 characters, one number and one capital letter required' })
 
+    const hashedPassword = hashPassword(password)
     const queryRunner = AppDataSource.createQueryRunner()
     await queryRunner.connect()
     await queryRunner.startTransaction()
     try {
       const newAccountCreate = new Account()
       await queryRunner.manager.save(newAccountCreate)
-      const newUser = new User(username, password, newAccountCreate)
+      const newUser = new User(username, hashedPassword, newAccountCreate)
       await queryRunner.manager.save(newUser)
       await queryRunner.commitTransaction()
       return res.status(200).json(newUser)
