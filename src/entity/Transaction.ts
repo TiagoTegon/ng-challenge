@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 import { Account } from "./Account";
 
 @Entity()
@@ -7,10 +7,10 @@ export class Transaction {
   id: number
 
   @ManyToOne(() => Account, (account) => account.id)
-  debitedAccountId: Account
+  debitedAccount: Account
   
   @ManyToOne(() => Account, (account) => account.id)
-  creditedAccountId: Account
+  creditedAccount: Account
 
   @Column({ type: "float" })
   value: number

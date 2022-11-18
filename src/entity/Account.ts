@@ -10,6 +10,9 @@ export class Account {
     @Column("float", { default: 100.00 })
     balance: number
 
-    // @OneToMany(() => Transaction, (transaction) => transaction.creditedAccountId)
-    // transactions: Transaction[]
+    @OneToMany(() => Transaction, (transaction) => transaction.debitedAccount)
+    debitedTransactions: Transaction[]
+
+    @OneToMany(() => Transaction, (transaction) => transaction.creditedAccount)
+    creditedTransactions: Transaction[]
 }

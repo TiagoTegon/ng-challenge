@@ -17,4 +17,3 @@ connectDB()
 
 app.use('/account', accountRouter)
 app.use('/user', userRouter)
-// app.use('/', (req, res) => res.send('NG-CHALLENGE API'))
