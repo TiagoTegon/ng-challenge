@@ -3,6 +3,7 @@ import { Account } from "../entity/Account"
 import { User } from "../entity/User"
 
 import * as crypto from "crypto"
+import * as jwt from "jsonwebtoken"
 
 function hashPassword(password: string) {
   let hash = crypto.createHmac('sha256', 'ng-challenge')
@@ -97,6 +98,37 @@ export class UserController {
       return res.status(200).json({ message: `User ${id} deleted and Account ${accountId} deleted`})
     } catch (error) {
       await queryRunner.rollbackTransaction()
+      return res.status(500).json(error.message)
+    }
+  }
+
+  async loginUser(req, res) {
+    const { username, password } = req.body
+    try {
+      const findUser = await AppDataSource.manager.findOne(User, {
+        where: { username: username },
+      })
+      if(findUser === null) throw new Error(`User ${username} not found`)
+      if(findUser.password !== hashPassword(password)) throw new Error(`Invalid password`)
+
+      const privateKey = 'ng-challenge'
+      console.log(findUser)
+      const token = jwt.sign({ username: findUser.username, password: findUser.password }, privateKey, { expiresIn: "24h" })
+      return res.status(200).json({ "x-access-token": token })
+    } catch (error) {
+      return res.status(500).json(error.message)
+    }
+  }
+
+  async getBalanceByUser(req, res) {
+    const { username } = req.body
+    try {
+      const userBalance = await AppDataSource.manager.findOne(User, {
+        where: { username: username},
+        relations: { account: true }
+      })
+      return res.status(200).json(userBalance.account.balance)
+    } catch (error) {
       return res.status(500).json(error.message)
     }
   }
