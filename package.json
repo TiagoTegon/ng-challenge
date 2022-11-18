@@ -25,7 +25,7 @@
       "typeorm-extension": "^2.2.13"
    },
    "scripts": {
-      "dev": "ts-node-dev src/server.ts",
+      "dev": "ts-node-dev api/server.ts",
       "start": "ts-node src/server.ts",
       "typeorm": "typeorm-ts-node-commonjs"
    }
