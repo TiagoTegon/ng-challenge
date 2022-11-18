@@ -2,7 +2,7 @@ import * as jwtService from "jsonwebtoken"
 
 export const validateJWT = (req, res, next) => {
   const jwt = req.headers.authorization
-  const username = req.body.username
+  const { username } = req.params
   const privateKey = 'ng-challenge'
 
   jwtService.verify(jwt, privateKey, (error, info) => {
@@ -11,7 +11,6 @@ export const validateJWT = (req, res, next) => {
       return
     }
     if(info.username !== username) return res.status(500).send(`Token does not belong to this user`)
-    req.body = info
     next()
   })
 }

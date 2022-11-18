@@ -4,19 +4,19 @@ import { Transaction } from "../entity/Transaction"
 import { User } from "../entity/User"
 
 export class TransactionController {
+
   async createTransaction(req, res) {
     const { creditedUser, value } = req.body
-    const { id } = req.params
-
+    const { username } = req.params
+    console.log(value)
     const queryRunner = AppDataSource.createQueryRunner()
     await queryRunner.connect()
     await queryRunner.startTransaction()
     try {
       const debitedUser = await AppDataSource.manager.findOne(User, {
-        where: { id: Number(id) },
+        where: { username: username },
         relations: { account: true }
       })
-      console.log(debitedUser)
       if(debitedUser.username === creditedUser) throw new Error(`Operation denied`)
       const accountCreditedUser = await AppDataSource.manager.findOne(User, {
         where: { username: creditedUser },
@@ -33,29 +33,28 @@ export class TransactionController {
       await queryRunner.manager.save(newTransactionCreate)
 
       const accountDebitedId = Number(accountDebitedUser.id)
-      const accountDebitedBalance = accountDebitedUser.balance - value
+      const accountDebitedBalance = Number(accountDebitedUser.balance) - Number(value)
       await AppDataSource.manager.update(Account, accountDebitedId, { balance: accountDebitedBalance })
 
       const accountCreditedId = Number(accountCreditedUser.account.id)
       const accountCreditedBalance = accountCreditedUser.account.balance + value
       await AppDataSource.manager.update(Account, accountCreditedId, { balance: accountCreditedBalance })
       await queryRunner.commitTransaction()
-      return res.status(200).json({ message: `Successful cash-out for ${debitedUser.username}`})
+      return res.status(200).json({ message: `Successful cash-in for ${creditedUser}`})
     } catch (error) {
       await queryRunner.rollbackTransaction()
       return res.status(500).json(error.message)
     }
   }
 
-  async getAllTransactionByUser(req, res) {
-    const { id } = req.params
+  async getTransactionByUser(req, res) {
+    const { username } = req.params
     try {
       const findUser = await AppDataSource.manager.findOne(User, {
-        where: { id: Number(id) },
+        where: { username: username },
         relations: { account: true }
       })
       const accountId = findUser.account
-      console.log(accountId)
       const allUserTransaction = await AppDataSource.manager.find(Transaction, {
         where: [{ 
           debitedAccount: accountId 
