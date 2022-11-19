@@ -1,42 +1,60 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { Formik, Form, Field } from "formik"
 import loginImg from "../../login.svg"
+import { useHistory } from 'react-router-dom'
 
-interface IProps {
-}
-
-export class Register extends React.Component {
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-  constructor(props: IProps) {
-    super(props)
+export function Register() {
+  const [isUserRegister, setIsUserRegister] = useState(false)
+  const history = useHistory()
+  
+  async function handleRegister(formValue: { username: string; password: string }) {
+    history.push('/login')
+    window.location.reload()
+    const { username, password } = formValue
+    const reqOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: username, password: password })
+    }
+    // await fetch('http://localhost:3000/user/', reqOptions)
+    //                   .then(() => setIsUserRegister(true))
+    //                   .catch(() => setIsUserRegister(false))
+  }
+  
+  const initialValues = {
+    username: "",
+    password: ""
   }
 
-  render() {
-    return (
-      <div className='base-container'>
-        <div className='header'>Register</div>
-        <div className='content'>
-          <div className='image'>
-            <img src={loginImg} alt='registerImg'/>
+  return (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleRegister}
+    >
+      <Form>
+        <div className='base-container'>
+          <div className='header'>Register</div>
+          <div className='content'>
+            <div className='image'>
+              <img src={loginImg} alt='loginImg' />
+            </div>
+            <div className='form'>
+              { isUserRegister && <label>Register Success</label> }
+              <div className='form-group'>
+                <label htmlFor='username'>Username</label>
+                <Field type='text' name='username' placeholder='Username' />
+              </div>
+              <div className='form-group'>
+                <label htmlFor='password'>Password</label>
+                <Field type='password' name='password' placeholder='Password' />
+              </div>
+            </div>
           </div>
-          <div className='form'>
-            <div className='form-group'>
-              <label htmlFor='username'>Username</label>
-              <input type='text' name='username' placeholder='Username'/>
-            </div>
-            <div className='form-group'>
-              <label htmlFor='password'>Password</label>
-              <input type='password' name='password' placeholder='Password'/>
-            </div>
-            <div className='form-group'>
-              <label htmlFor='password'>Confirm Password</label>
-              <input type='password' name='confirmPassword' placeholder='Confirm Password'/>
-            </div>
+          <div className='footer'>
+            <button type='submit' className='btn'>Register</button>
           </div>
         </div>
-        <div className='footer'>
-          <button type='button' className='btn'>Register</button>
-        </div>
-      </div>
-    )
-  }
+      </Form>
+    </Formik>
+  )
 }

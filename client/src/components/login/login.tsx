@@ -1,75 +1,62 @@
-import React from 'react'
-import { RouteComponentProps } from "react-router-dom";
+import React, { useState } from 'react'
 import { Formik, Form, Field } from "formik"
 import loginImg from "../../login.svg"
-import { response } from 'express';
 
-interface IProps {
-}
-
-type Props = RouteComponentProps<IProps>
-
-type State = {
-  username: string,
-  password: string
-}
-
-export class Login extends React.Component<IProps, State> {
-  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
-  constructor(props: IProps) {
-    super(props)
-    this.state = {
-      username: "",
-      password: ""
-    }
-  }
-
-  handleLogin(formValue: {username: string; password: string}) {
+export function Login() {
+  const [isUserLoggin, setIsUserLoggin] = useState(false)
+  const [userToken, setUserToken] = useState("")
+  
+  async function handleLogin(formValue: { username: string; password: string }) {
     const { username, password } = formValue
     const reqOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: username, password: password})
+      body: JSON.stringify({ username: username, password: password })
     }
-    fetch('https://localhost:3000/login', reqOptions)
+    await fetch('http://localhost:3000/user/login', reqOptions)
+                      .then(async (response) => {
+                        setIsUserLoggin(true)
+                        const data = await response.json()
+                        console.log(data['x-access-token'])
+                        setUserToken(data['x-access-token'])
+                      })
+                      .catch(() => setIsUserLoggin(false))
   }
 
-  render() {
+  const initialValues = {
+    username: "",
+    password: ""
+  }
 
-    const initialValues = {
-      username: "",
-      password: ""
-    }
-
-    return (
-      <Formik
-        initialValues={initialValues}
-        onSubmit={this.handleLogin}
-      >
-        <Form>
-          <div className='base-container'>
-            <div className='header'>Login</div>
-            <div className='content'>
-              <div className='image'>
-                <img src={loginImg} alt='loginImg'/>
-              </div>
-              <div className='form'>
-                <div className='form-group'>
-                  <label htmlFor='username'>Username</label>
-                  <Field type='text' name='username' placeholder='Username'/>
-                </div>
-                <div className='form-group'>
-                  <label htmlFor='password'>Password</label>
-                  <Field type='password' name='password' placeholder='Password'/>
-                </div>
-              </div>
+  return (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleLogin}
+    >
+      <Form>
+        <div className='base-container'>
+          <div className='header'>Login</div>
+          <div className='content'>
+            <div className='image'>
+              <img src={loginImg} alt='loginImg' />
             </div>
-            <div className='footer'>
-              <button type='submit' className='btn'>Login</button>
+            <div className='form'>
+              { isUserLoggin && <label>Success Login</label>}
+              <div className='form-group'>
+                <label htmlFor='username'>Username</label>
+                <Field type='text' name='username' placeholder='Username' />
+              </div>
+              <div className='form-group'>
+                <label htmlFor='password'>Password</label>
+                <Field type='password' name='password' placeholder='Password' />
+              </div>
             </div>
           </div>
-        </Form>
-      </Formik>
-    )
-  }
+          <div className='footer'>
+            <button type='submit' className='btn'>Login</button>
+          </div>
+        </div>
+      </Form>
+    </Formik>
+  )
 }

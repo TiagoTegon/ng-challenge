@@ -7,23 +7,13 @@ export default function App() {
 
   return (
     <Router>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Login</Link>
-          </li>
-          <li>
-            <Link to="/register">Register</Link>
-          </li>
-        </ul>
-      </nav>
       <div className='App'>
         <Switch>
-          <Route path='/'>
-            <Login/>
+          <Route path='/login'>
+            <Login />
           </Route>
           <Route path='/register'>
-            <Register/>
+            <Register />
           </Route>
         </Switch>
       </div>
