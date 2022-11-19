@@ -1,7 +1,7 @@
-import * as express from "express"
-import * as bodyParser from "body-parser"
-import * as cors from "cors"
-import * as logger from "morgan"
+import express from "express"
+import bodyParser from "body-parser"
+import cors from "cors"
+import logger from "morgan"
 
 import { connectDB } from "./config/db"
 import { accountRouter } from "./routes/accountRoutes"
