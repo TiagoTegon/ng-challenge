@@ -27,6 +27,10 @@ export class Register extends React.Component {
               <label htmlFor='password'>Password</label>
               <input type='password' name='password' placeholder='Password'/>
             </div>
+            <div className='form-group'>
+              <label htmlFor='password'>Confirm Password</label>
+              <input type='password' name='confirmPassword' placeholder='Confirm Password'/>
+            </div>
           </div>
         </div>
         <div className='footer'>
