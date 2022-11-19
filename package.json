@@ -31,7 +31,7 @@
       "typeorm-extension": "^2.2.13"
    },
    "scripts": {
-      "dev": "ts-node-dev server/server.ts",
+      "dev": "ts-node-dev src/server/server.ts",
       "client": "react-scripts start",
       "start": "ts-node src/server.ts",
       "typeorm": "typeorm-ts-node-commonjs"
