@@ -16,6 +16,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.39.4",
     "react-router-dom": "^5.2.0",
+    "react-router": "^5.2.0",
     "react-scripts": "5.0.1",
     "react-toastify": "^9.1.1",
     "typescript": "^4.9.3",
@@ -46,6 +47,8 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.3.3"
+    "@types/react-router-dom": "^5.3.3",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "node-sass": "^7.0.3"
   }
 }

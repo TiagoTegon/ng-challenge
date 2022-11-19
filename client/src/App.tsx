@@ -1,19 +1,14 @@
-import React from "react";
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.bundle.min.js";
-// import SignUp from "./Components/SignUp";
-// import Login from "./Components/Login";
-// import PrivateRoute from "./Auth/PrivateRoute";
-// import Home from "./Components/Home";
-import {BrowserRouter, Route, Switch} from 'react-router-dom';
-function App() {
+import React, { useState } from 'react'
+import logo from './logo.svg'
+import './App.scss'
+import { Login, Register } from './components/login';
+
+export default function App() {
+
   return (
-      <BrowserRouter>
-      <Switch>
-        {/* <PrivateRoute exact path="/login" component={Login}/> */}
-        {/* <Route exact path="/register" component={SignUp} /> */}
-        </Switch>
-    </BrowserRouter>
-  );
+    <div className='App'>
+        <Login/>
+        <Register/>
+    </div>
+  )
 }
-export default App;
