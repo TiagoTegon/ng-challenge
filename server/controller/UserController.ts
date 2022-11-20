@@ -121,7 +121,7 @@ export class UserController {
   }
 
   async getBalanceByUser(req, res) {
-    const { username } = req.body
+    const { username } = req.params
     try {
       const userBalance = await AppDataSource.manager.findOne(User, {
         where: { username: username},
