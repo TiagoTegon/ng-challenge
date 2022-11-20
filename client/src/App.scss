@@ -122,3 +122,20 @@
     outline: none;
   }
 }
+
+.btn-cancel {
+  font-size: 21px;
+  padding: 5px 20px;
+  border: 0;
+  background-color: #ec2929;
+  color: #fff;
+  border-radius: 3px;
+  transition: all 250ms ease-in-out;
+  cursor: pointer;
+  &:hover {
+    background-color: #c82323;
+  }
+  &:focus {
+    outline: none;
+  }
+}

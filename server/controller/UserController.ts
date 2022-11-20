@@ -112,7 +112,6 @@ export class UserController {
       if(findUser.password !== hashPassword(password)) throw new Error(`Invalid password`)
 
       const privateKey = 'ng-challenge'
-      console.log(findUser)
       const token = jwt.sign({ username: findUser.username, password: findUser.password }, privateKey, { expiresIn: "24h" })
       return res.status(200).json({ "x-access-token": token })
     } catch (error) {

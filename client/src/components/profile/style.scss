@@ -1,0 +1,62 @@
+.profile {
+  margin: 10px 10px 10px 10px;
+  text-align: center;
+  display: flex;
+
+  .footer {
+    margin-top: 50px;
+  }
+}
+
+.header {
+  font-size: 40px;
+}
+
+.panel {
+  width: 100%;
+  flex-direction: row;
+  margin: 30px;
+  border-style: solid;
+  border-color: #659af0ce;
+  border-width: 1px;
+  border-radius: 10px;
+
+  .panel-column {
+    margin: 10px 30px 30px 10px;
+
+    .container-side {
+      background-color: #a5f8e34b;
+      padding: 10px 10px 10px 10px;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .content {
+    flex-direction: column;
+    align-items: flex-start;
+    label {
+      font-size: 20px;
+    }
+    input {
+      margin: 6px 6px 0px 0px;
+      height: 37px;
+      padding: 0px 10px;
+      font-size: 16px;
+      font-family: "Open Sans", sans-serif;
+      background-color: #f3f3f3;
+      border: 0;
+      border-radius: 4px;
+      margin-bottom: 31px;
+      transition: all 250ms ease-in-out;
+      &:focus {
+        outline: none;
+        box-shadow: 0px 0px 12px 0.8px #3474dbb2;
+      }
+    }
+  }
+
+  .transactionTable {
+    padding: 20px;
+  }
+}

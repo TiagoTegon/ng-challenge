@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { Formik, Form, Field } from "formik"
 import { useLocation } from 'react-router-dom'
 import refreshIcon from './img/refresh.svg'
-import { useHistory } from 'react-router-dom' 
+import { useHistory } from 'react-router-dom'
 
 
 interface stateType {
@@ -11,8 +11,8 @@ interface stateType {
 }
 
 export function Profile() {
-  const [ balance, setBalance ] = useState()
-  const [ transactions, setTransactions ] = useState([])
+  const [balance, setBalance] = useState()
+  const [transactions, setTransactions] = useState([])
   const { state } = useLocation<stateType>()
   const history = useHistory()
 
@@ -20,17 +20,17 @@ export function Profile() {
     let fetchOk = false
     const reqOptions = {
       method: 'GET',
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
-        'authorization': token 
+        'authorization': token
       },
     }
     await fetch(`http://localhost:3000/user/${username}/balance`, reqOptions)
-          .then(async (res) => {
-            const data = await res.json()
-            setBalance(data)
-            fetchOk = true
-          })
+      .then(async (res) => {
+        const data = await res.json()
+        setBalance(data)
+        fetchOk = true
+      })
     return fetchOk
   }
 
@@ -38,35 +38,34 @@ export function Profile() {
     let fetchOk = false
     const reqOptions = {
       method: 'GET',
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
-        'authorization': token 
+        'authorization': token
       },
     }
     await fetch(`http://localhost:3000/user/${username}/transaction`, reqOptions)
-          .then(async (res) => {
-            const data = await res.json()
-            console.log(data)
-            setTransactions(data)
-            fetchOk = true
-          })
+      .then(async (res) => {
+        const data = await res.json()
+        setTransactions(data)
+        fetchOk = true
+      })
     return fetchOk
   }
 
-  async function createTransaction(formValue: {creditedUser: string, value: number}) {
+  async function createTransaction(formValue: { creditedUser: string, value: number }) {
     const { creditedUser, value } = formValue
     const { username, token } = state
     let fetchOk = false
     const reqOptions = {
       method: 'POST',
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
-        'authorization': token 
+        'authorization': token
       },
       body: JSON.stringify({ creditedUser: creditedUser, value: value })
     }
     await fetch(`http://localhost:3000/user/${username}/transaction`, reqOptions)
-          .then(() => fetchOk = true)
+      .then(() => fetchOk = true)
     return fetchOk
   }
 
@@ -84,15 +83,17 @@ export function Profile() {
     <div className='profile'>
       <div className='header'>Hello {state.username}!</div>
       <div className='panel'>
-        <div className='panel-balance'>
-          <div className='content'>
-            <label>Current balance</label>
-          </div>
-          <div className='content'>
-            <label>{balance}</label>
-          </div>
-          <div className='content'>
-            <button onClick={() => getBalance(state.username, state.token)} className='btn'>Refresh balance</button>
+        <div className='panel-column'>
+          <div className='container-side'>
+            <div className='content'>
+              <label>Current balance</label>
+            </div>
+            <div className='content'>
+              <label>{balance}</label>
+            </div>
+            <div className='content'>
+              <button onClick={() => getBalance(state.username, state.token)} className='btn'>Refresh balance</button>
+            </div>
           </div>
         </div>
         <Formik
@@ -100,55 +101,57 @@ export function Profile() {
           onSubmit={createTransaction}
         >
           <Form>
-            <div className='panel-transaction'>
+            <div className='panel-column'>
               <div className='content'>
                 <label>New Cash-in</label>
               </div>
               <div className='content'>
                 <label htmlFor='creditedUser'>Cash-in to:</label>
-                <Field type='text' name='creditedUser' placeholder='Cash-in to' />
-              </div> 
+                <Field type='text' name='creditedUser' placeholder='Username' />
+              </div>
               <div className='content'>
                 <label htmlFor='value'>Value:</label>
                 <Field type='number' name='value' placeholder='Value' />
-              </div> 
+              </div>
               <div className='content'>
                 <button type='submit' className='btn'>Send</button>
               </div>
-          </div>
+            </div>
           </Form>
         </Formik>
-        <div className='panel-transaction-list'>
-          <div className='content'>
-            <label>Transaction List</label>
-          </div>
-          <table className='transactionTable'>
-            <thead>
-              <tr>
-                <th>Value</th>
-                <th>CreatedAt</th>
-                <th>CreditedAccount</th>
-                <th>DebitedAccount</th>
-              </tr>
-            </thead>
-          </table>
-          <tbody>
-            {Object.entries(transactions).map((transaction: any) => (
-              <tr key={transaction[1].id}>
-                <td>{transaction[1].value}</td>
-                <td>{transaction[1].createdAt}</td>
-                <td>{transaction[1].creditedAccount.id}</td>
-                <td>{transaction[1].debitedAccount.id}</td>
-              </tr>
-            ))}
-          </tbody>
-          <div className='content'>
-            <button onClick={() => getTransactionList(state.username, state.token)} className='btn'>Refresh Transaction List</button>
+        <div className='panel-column'>
+          <div className='container-side'>
+            <div className='content'>
+              <label>Transaction List</label>
+            </div>
+            <table className='transactionTable'>
+              <thead>
+                <tr>
+                  <th>Value</th>
+                  <th>CreatedAt</th>
+                  <th>CreditedAccount</th>
+                  <th>DebitedAccount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {Object.entries(transactions).map((transaction: any) => (
+                  <tr key={transaction[1].id}>
+                    <td>{transaction[1].value}</td>
+                    <td>{transaction[1].createdAt}</td>
+                    <td>{transaction[1].creditedAccount.id}</td>
+                    <td>{transaction[1].debitedAccount.id}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div className='content'>
+              <button onClick={() => getTransactionList(state.username, state.token)} className='btn'>Refresh Transaction List</button>
+            </div>
           </div>
         </div>
       </div>
       <div className='footer'>
-        <button onClick={logout} className='btn'>Logout</button>
+        <button onClick={logout} className='btn-cancel'>Logout</button>
       </div>
     </div>
   )

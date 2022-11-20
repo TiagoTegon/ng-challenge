@@ -20,12 +20,10 @@ export function Login() {
                       .then(async (response) => {
                         setIsUserLoggin(true)
                         const data = await response.json()
-                        console.log(data['x-access-token'])
                         token = data['x-access-token']
                         setUserToken(data['x-access-token'])
                       })
                       .catch(() => setIsUserLoggin(false))
-    console.log('userToken: ',token)
     if(token) {
       history.push('/profile', { 
         username: username,

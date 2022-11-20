@@ -9,10 +9,4 @@ export const connectDB = async () => {
   }).catch(() => {
     console.log('Error on start database connection')
   })
-  // const connection = await createConnection()
-  // console.log(`App connected to DB ${connection.options.database}`)
-
-  // process.on('SIGINT', () => {
-  //   connection.close().then(() => console.log('Closed DB connection'))
-  // })
 }
