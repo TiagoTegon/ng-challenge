@@ -1,13 +1,16 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Formik, Form, Field } from "formik"
+import { useHistory } from 'react-router-dom' 
 import loginImg from "../../login.svg"
 
 export function Login() {
   const [isUserLoggin, setIsUserLoggin] = useState(false)
   const [userToken, setUserToken] = useState("")
+  const history = useHistory()
   
   async function handleLogin(formValue: { username: string; password: string }) {
     const { username, password } = formValue
+    let token = ""
     const reqOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -18,9 +21,18 @@ export function Login() {
                         setIsUserLoggin(true)
                         const data = await response.json()
                         console.log(data['x-access-token'])
+                        token = data['x-access-token']
                         setUserToken(data['x-access-token'])
                       })
                       .catch(() => setIsUserLoggin(false))
+    console.log('userToken: ',token)
+    if(token) {
+      history.push('/profile', { 
+        username: username,
+        token: token 
+      })
+      window.location.reload()
+    }
   }
 
   const initialValues = {
@@ -41,7 +53,7 @@ export function Login() {
               <img src={loginImg} alt='loginImg' />
             </div>
             <div className='form'>
-              { isUserLoggin && <label>Success Login</label>}
+              { isUserLoggin && <div>Login success</div>}
               <div className='form-group'>
                 <label htmlFor='username'>Username</label>
                 <Field type='text' name='username' placeholder='Username' />

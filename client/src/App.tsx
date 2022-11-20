@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-import { Link, Route, Switch, BrowserRouter as Router } from 'react-router-dom' 
+import { Route, Switch, BrowserRouter as Router, Redirect } from 'react-router-dom' 
 import './App.scss'
 import { Login, Register } from './components/login/'
+import { Profile } from './components/profile'
 
 export default function App() {
 
@@ -9,11 +9,17 @@ export default function App() {
     <Router>
       <div className='App'>
         <Switch>
+          <Route exact path='/'>
+            <Redirect to="/login" />
+          </Route>
           <Route path='/login'>
             <Login />
           </Route>
           <Route path='/register'>
             <Register />
+          </Route>
+          <Route path='/profile'>
+            <Profile />
           </Route>
         </Switch>
       </div>

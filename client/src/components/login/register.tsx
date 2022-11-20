@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { Formik, Form, Field } from "formik"
 import loginImg from "../../login.svg"
 import { useHistory } from 'react-router-dom'
@@ -11,14 +11,22 @@ export function Register() {
     history.push('/login')
     window.location.reload()
     const { username, password } = formValue
+    let isRegister = false
     const reqOptions = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: username, password: password })
     }
-    // await fetch('http://localhost:3000/user/', reqOptions)
-    //                   .then(() => setIsUserRegister(true))
-    //                   .catch(() => setIsUserRegister(false))
+    await fetch('http://localhost:3000/user/', reqOptions)
+                      .then(() => {
+                        isRegister = true
+                        setIsUserRegister(true)
+                      })
+                      .catch(() => setIsUserRegister(false))
+    if(isRegister) {
+      history.push('/login')
+      window.location.reload()
+    }
   }
   
   const initialValues = {
