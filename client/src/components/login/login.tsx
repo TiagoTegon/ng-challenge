@@ -33,6 +33,11 @@ export function Login() {
     }
   }
 
+  function handleRegister() {
+    history.push('/register')
+    window.location.reload()
+  }
+
   const initialValues = {
     username: "",
     password: ""
@@ -64,6 +69,7 @@ export function Login() {
           </div>
           <div className='footer'>
             <button type='submit' className='btn'>Login</button>
+            <button onClick={handleRegister} className='btn'>Register</button>
           </div>
         </div>
       </Form>
