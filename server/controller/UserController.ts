@@ -108,8 +108,8 @@ export class UserController {
       const findUser = await AppDataSource.manager.findOne(User, {
         where: { username: username },
       })
-      if(findUser === null) throw new Error(`User ${username} not found`)
-      if(findUser.password !== hashPassword(password)) throw new Error(`Invalid password`)
+      if(findUser === null) return res.status(500).send(`User ${username} not found`)
+      if(findUser.password !== hashPassword(password)) return res.status(500).send(`Invalid password`)
 
       const privateKey = 'ng-challenge'
       const token = jwt.sign({ username: findUser.username, password: findUser.password }, privateKey, { expiresIn: "24h" })

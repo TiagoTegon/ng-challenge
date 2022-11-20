@@ -17,14 +17,14 @@ export class TransactionController {
         where: { username: username },
         relations: { account: true }
       })
-      if(debitedUser.username === creditedUser) throw new Error(`Operation denied`)
+      if(debitedUser.username === creditedUser) return res.status(500).send(`Operation denied`)
       const accountCreditedUser = await AppDataSource.manager.findOne(User, {
         where: { username: creditedUser },
         relations: { account: true }
       })
-      if(accountCreditedUser === null) throw new Error(`User ${creditedUser} not found`)
+      if(accountCreditedUser === null) return res.status(500).send(`User ${creditedUser} not found`)
       const accountDebitedUser = debitedUser.account
-      if(accountDebitedUser.balance < value) throw new Error(`Insufficient value`)
+      if(accountDebitedUser.balance < value) return res.status(500).send(`Insufficient value`)
       
       const newTransactionCreate = new Transaction()
       newTransactionCreate.debitedAccount = accountDebitedUser
